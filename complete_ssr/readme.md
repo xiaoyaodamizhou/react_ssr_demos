@@ -1,3 +1,6 @@
+# 运行
+npm install
+npm run dev
 # 服务的启动
 1. nodemon 进行node.js的自动更新服务
 2. wepack --watch 进行打包的自动更新服务

@@ -2,10 +2,13 @@ import React, { useContext, useEffect } from "react";
 import { Store as GlobalStore } from "@/store/global";
 import clientAxios from "@/client/request";
 import serverAxios from "@/server/request";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import styles from "./index.css";
 
 const Home = (props) => {
+    // 服务端isomorphic-style-loader插件会给styles绑定_getCss()方法
+    console.log("css", styles)
+    console.log('server home props:', props)
     props.staticContext && props.staticContext.css.push(styles._getCss());
     const { dispatch: globalDispatch, state: globalState } = useContext(
         GlobalStore

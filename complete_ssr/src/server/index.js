@@ -1,21 +1,17 @@
 const koa = require("koa");
 const bodyParser = require("koa-bodyParser");
 const staticFiles = require("koa-static");
-const nunjucks = require("koa-nunjucks-2");
 const router = require("koa-router")();
-const Koa = require("koa");
 const proxy = require("koa2-proxy-middleware");
-const app = new koa();
-const JSON_MIME = "application/json";
 const path = require("path");
+
 import { matchRoutes } from "react-router-config";
 import { render } from "./utils";
 import Routes from "../Routes";
 import { initStore } from "../store/global";
 
-
+const app = new koa();
 const cors = require("@koa/cors");
-const log = console.log.bind(console);
 
 app.use(
     cors({
@@ -23,6 +19,8 @@ app.use(
     })
 );
 
+// 代理配置, 形如uri: `${protocal}://${hostname}/api/${path}`的请求装交给代理服务器
+// 假设服务接口url: http://49.235.72.243:3001
 app.use(
     proxy({
         targets: {
@@ -37,27 +35,20 @@ app.use(
     })
 );
 
+
 app.use(
     bodyParser({
         multipart: true,
     })
 );
 
+// 静态文件设置，将客户端打代码打包到静态文件目录
 app.use(
     staticFiles(path.resolve(__dirname, "../src/server/public"), {
         maxage: 30 * 24 * 60 * 60 * 1000,
     })
 );
 
-app.use(
-    nunjucks({
-        ext: "html",
-        path: path.join(__dirname, "../src/server/views"),
-        nunjucksConfig: {
-            trimBlocks: true,
-        },
-    })
-);
 
 router.get("/(.*)", async (context, next) => {
     // 根据路由的路径，来往store里面加数据
@@ -81,6 +72,7 @@ router.get("/(.*)", async (context, next) => {
             css: [],
         };
         const html = render(context.request, Routes, ctx);
+        console.log("ctx", ctx)
         if (ctx.notFound) {
             context.response.status = 404;
         }
@@ -97,5 +89,5 @@ router.get("/(.*)", async (context, next) => {
 app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(3000, () => {
-    console.log("app service start at 3000");
+    console.log("app service start at http://localhost:3000");
 });

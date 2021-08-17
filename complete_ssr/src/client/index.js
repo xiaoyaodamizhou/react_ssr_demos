@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import Routes from "../Routes";
 import { renderRoutes } from "react-router-config";
 import {
@@ -21,9 +21,9 @@ function GlobalProvider({ children }) {
 const App = () => {
     return (
         <GlobalProvider>
-                <BrowserRouter>
-                    <div>{renderRoutes(Routes)}</div>
-                </BrowserRouter>
+            <BrowserRouter>
+                <div>{renderRoutes(Routes)}</div>
+            </BrowserRouter>
         </GlobalProvider>
     );
 };

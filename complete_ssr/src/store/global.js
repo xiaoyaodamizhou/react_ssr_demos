@@ -10,7 +10,7 @@ export const initStore = {
 
 export const Store = createStore(initStore)
 
-const reducer = createReducer(initStore, function() {
+const reducer = createReducer(initStore, function () {
     return {
         ["UPDATE_USER_INFO"](state, action) {
             return {
@@ -28,4 +28,5 @@ const reducer = createReducer(initStore, function() {
 })
 
 export const useReduxHook = () => useReducer(reducer, useContext(Store))
+// 其实这就是出水，从window.context中拿到state
 export const useClientReduxHook = () => useReducer(reducer, useContext(createStore(window.context.state)))

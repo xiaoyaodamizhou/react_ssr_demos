@@ -2,6 +2,7 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const { merge } = require("webpack-merge");
 const config = require("./webpack.base");
+const { getStyleLoaders } = require('./webpack.utils')
 
 const serverConfig = {
     target: "node",
@@ -17,22 +18,14 @@ const serverConfig = {
     module: {
         rules: [
             {
-                test: /\.css?$/,
-                use: [
-                    "isomorphic-style-loader",
-                    {
-                        loader: "css-loader",
-                        options: {
-                            importLoaders: 1,
-                            esModule: false,
-                            modules: {
-                                localIdentName: '[name]__[local]___[hash:base64:5]',
-                            }
-                        },
-
-                    },
-                    'postcss-loader',
-                ],
+                test: /\.css$/,
+                use: getStyleLoaders({
+                    importLoaders: 1,
+                    esModule: false,
+                    modules: {
+                        localIdentName: '[name]__[local]___[hash:base64:5]',
+                    }
+                }, null, 'server'),
             },
         ],
     },

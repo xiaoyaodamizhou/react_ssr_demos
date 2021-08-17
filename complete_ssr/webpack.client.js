@@ -1,7 +1,7 @@
 const path = require("path");
 const { merge } = require("webpack-merge");
 const config = require("./webpack.base");
-// const { getStyleLoaders } = require('./webpack.utils')
+const { getStyleLoaders } = require('./webpack.utils')
 
 const clientConfig = {
     mode: "development",
@@ -17,19 +17,12 @@ const clientConfig = {
         rules: [
             {
                 test: /\.css$/,
-                use: [
-                    "style-loader",
-                    {
-                        loader: "css-loader",
-                        options: {
-                            importLoaders: 1,
-                            modules: {
-                                localIdentName: '[name]__[local]___[hash:base64:5]',
-                            }
-                        },
-                    },
-                    'postcss-loader',
-                ],
+                use: getStyleLoaders({
+                    importLoaders: 1,
+                    modules: {
+                        localIdentName: '[name]__[local]___[hash:base64:5]',
+                    }
+                }),
             },
         ],
     },
